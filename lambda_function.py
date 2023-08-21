@@ -1,5 +1,6 @@
 import json
 import logging
+import utils
 import ask_sdk_core.utils as ask_utils
 
 from ask_sdk_core.skill_builder import SkillBuilder
@@ -10,8 +11,8 @@ from ask_sdk_core.handler_input import HandlerInput
 from ask_sdk_model import Response
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
-
+logger.setLevel(logging.INFO)   
+    
 def build_response(output):
     return {
         'statusCode': 200,
@@ -35,7 +36,7 @@ class LaunchRequestHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        speak_output = "What should I do with the air conditioning?"
+        speak_output = utils.greetResponse()
 
         return (
             handler_input.response_builder
