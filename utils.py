@@ -43,7 +43,6 @@ def get_secret():
     except ClientError as e:
         logging.error("Exception extracting secret: %s", str(e))
 
-    # Decrypts secret using the associated KMS key.
     secret = get_secret_value_response['SecretString']
     return secret
 
@@ -52,7 +51,7 @@ def make_prompt(prompt, model = "gpt-3.5-turbo", temperature = 0.7):
 
     Args:
         prompt (str): Prompt that will be sent to OpenAI
-        model (str, optional): OpenAI language  model. Defaults to "gpt-3.5-turbo".
+        model (str, optional): OpenAI language model. Defaults to "gpt-3.5-turbo".
         temperature (int, optional): Prompt temperature. Determines the randomness of the response. Defaults to 0.7.
 
     Returns:
