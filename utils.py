@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 import openai
 import boto3
 from botocore.exceptions import ClientError
@@ -42,9 +42,8 @@ def get_secret():
         )
     except ClientError as e:
         logging.error("Exception extracting secret: %s", str(e))
-
-    secret = get_secret_value_response['SecretString']
-    return secret
+        
+    return get_secret_value_response['SecretString']
 
 def make_prompt(prompt, model = "gpt-3.5-turbo", temperature = 0.7):
     """Sends the prompt to GPT using gpt-3.5-turbo as the default model with a default temperature of 0.7
@@ -52,7 +51,7 @@ def make_prompt(prompt, model = "gpt-3.5-turbo", temperature = 0.7):
     Args:
         prompt (str): Prompt that will be sent to OpenAI
         model (str, optional): OpenAI language model. Defaults to "gpt-3.5-turbo".
-        temperature (int, optional): Prompt temperature. Determines the randomness of the response. Defaults to 0.7.
+        temperature (int, optional): Prompt temperature. Determines the randomness of the response. Defaults to 0.7
 
     Returns:
         str: OpenAI's response

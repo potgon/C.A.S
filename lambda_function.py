@@ -35,10 +35,25 @@ class LaunchRequestHandler(AbstractRequestHandler):
         # type: (HandlerInput) -> bool
         return ask_utils.is_request_type("LaunchRequest")(handler_input)
 
-    def handle(self, handler_input):
+    def handle(self, handler_input) -> Response:
         # type: (HandlerInput) -> Response
-        handler_input.speak(utils.greetResponse())
+        greet_text = utils.greetResponse()
+        reprompt_text = "How can I help you?"
+        return handler_input.response_builder.speak(greet_text).reprompt(reprompt_text).response
+    
+class GPTIntentHandler(AbstractRequestHandler):
+    """Handler for GPT intent."""
+    def can_handler(self, handler_input):
+        return ask_utils.is_intent_name("GPTIntent")(handler_input) or ask_utils.is_intent_name("AMAZON.FallbackIntent")(handler_input)
+    
+    def handler(self, handler_input):
+        if ask_utils.is_intent_name("GPTIntent")(handler_input):
+            query = handler_input.request_envelope.request.intent.slots["Query"].value
+        else:
+            query = handler_input.request_envelope.request.intent.query
         
+        speech_text = utils.make_prompt(query)
+        return handler_input.response_builder.speak(speech_text).response
     
 class HelpIntentHandler(AbstractRequestHandler):
     """Handler for Help Intent."""
