@@ -94,22 +94,6 @@ class SessionEndedRequestHandler(AbstractRequestHandler):
         # Any cleanup logic goes here.
 
         return handler_input.response_builder.response
-    
-class FallbackIntentHandler(AbstractRequestHandler):
-    def can_handle(self, handler_input: HandlerInput) -> bool:
-        return (
-            handler_input.request_envelope.request.intent.name == "AMAZON.FallbackIntent"
-        )
-
-    def handle(self, handler_input: HandlerInput) -> Response:
-        speech_text = "I'm sorry, I didn't understand that. Please try again."
-
-        return (
-            handler_input.response_builder
-                .speak(speech_text)
-                .ask(speech_text)
-                .response
-        )
 
 class IntentReflectorHandler(AbstractRequestHandler):
     def can_handle(self, handler_input):
@@ -139,7 +123,6 @@ sb = SkillBuilder()
 sb.add_request_handler(LaunchRequestHandler())
 sb.add_request_handler(HelpIntentHandler())
 sb.add_request_handler(CancelOrStopIntentHandler())
-sb.add_request_handler(FallbackIntentHandler())
 sb.add_request_handler(SessionEndedRequestHandler())
 sb.add_request_handler(IntentReflectorHandler()) # make sure IntentReflectorHandler is last so it doesn't override your custom intent handlers
 
