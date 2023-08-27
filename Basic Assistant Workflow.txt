@@ -1,0 +1,5 @@
+1- User invokes the assistant
+2- Assistant greets the user and asks for prompt
+3- User makes request
+4- Assistant fulfills the request and asks if the session should stay open
+5- Assistant either fulfills new request or closes session
