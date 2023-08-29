@@ -47,13 +47,29 @@ class GPTIntentHandler(AbstractRequestHandler):
         return ask_utils.is_intent_name("GPTIntent")(handler_input) or ask_utils.is_intent_name("AMAZON.FallbackIntent")(handler_input)
     
     def handler(self, handler_input):
+        handler_input.response_builder.speak("Would you like to use a specific language model?").ask("Would you like to use a specific language model?")
+        answer = handler_input.request_envelope.request.intent.slots['AnswerSlot'].value
+        language_model = None
+        #TODO: Implement temperature
+        if utils.is_affirmative_response(answer):
+            handler_input.response_builder.speak("Would you like to use GPT 4 instead?").ask("Would you like to use or GPT 4 instead?")
+            inner_answer = handler_input.request_envelope.request.intent.slots['AnswerSlot'].value
+            if utils.is_affirmative_response(inner_answer):
+                language_model = "gpt-4"
+        elif utils.is_negative_response(answer):
+            handler_input.response_builder.speak("Alright")  
+        
         if ask_utils.is_intent_name("GPTIntent")(handler_input):
             query = handler_input.request_envelope.request.intent.slots["Query"].value
         else:
             query = handler_input.request_envelope.request.intent.query
         
-        speech_text = utils.make_prompt(query)
-        return handler_input.response_builder.speak(speech_text).response
+        if language_model is None:
+            speech_text = utils.make_prompt(query)
+        else:
+            speech_text = utils.make_prompt(query, language_model)
+        #TODO: Speak speech_text makes no sense no?
+        return handler_input.response_builder.speak(speech_text).response 
     
 class HelpIntentHandler(AbstractRequestHandler):
     """Handler for Help Intent."""

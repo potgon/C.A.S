@@ -64,3 +64,11 @@ def make_prompt(prompt, model = "gpt-3.5-turbo", temperature = 0.7):
         temperature=temperature
     )
     return response['choices'][0]['message']['content']
+
+def is_affirmative_response(answer):
+    yes_responses = ["yes", "sure", "yup", "of course", "yeah"]
+    return answer in yes_responses
+
+def is_negative_response(answer):
+    no_responses = ["no", "nope", "don't", "do not", "not really", "nop"]
+    return answer in no_responses
